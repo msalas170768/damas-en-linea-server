@@ -21,14 +21,20 @@ function cloneBoard(board) {
   return board.map(row => row.map(cell => (cell ? { ...cell } : null)));
 }
 
-// All capture moves for piece at (r, c). Both normal and king pieces capture in all 4 directions.
+// All capture moves for piece at (r, c). Normal pieces capture forward only; kings capture in all 4 directions.
 function getPieceCaptures(board, r, c) {
   const piece = board[r][c];
   if (!piece) return [];
   const opp = piece.player === 'red' ? 'black' : 'red';
   const captures = [];
 
-  for (const [dr, dc] of [[-1, -1], [-1, 1], [1, -1], [1, 1]]) {
+  const dirs = piece.king
+    ? [[-1, -1], [-1, 1], [1, -1], [1, 1]]
+    : piece.player === 'red'
+      ? [[-1, -1], [-1, 1]]
+      : [[1, -1], [1, 1]];
+
+  for (const [dr, dc] of dirs) {
     const mr = r + dr, mc = c + dc;
     const tr = r + 2 * dr, tc = c + 2 * dc;
     if (inBounds(mr, mc) && inBounds(tr, tc)) {
