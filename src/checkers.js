@@ -93,7 +93,7 @@ function applyMove(board, fr, fc, tr, tc) {
   const piece = { ...newBoard[fr][fc] };
   let capturedPos = null;
 
-  if (Math.abs(tr - fr) === 2) {
+  if (Math.abs(tr - fr) === 2 && Math.abs(tc - fc) === 2) {
     const cr = (fr + tr) / 2;
     const cc = (fc + tc) / 2;
     capturedPos = [cr, cc];
